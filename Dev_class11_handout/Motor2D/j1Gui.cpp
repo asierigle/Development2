@@ -41,6 +41,13 @@ bool j1Gui::PreUpdate()
 	return true;
 }
 
+//Update of UI_Elements
+bool UI_Element::Update(float dt)
+{
+	if (active == true)
+		PersonalUpdate(dt);
+}
+
 // Called after all Updates
 bool j1Gui::PostUpdate()
 {
@@ -51,15 +58,27 @@ bool j1Gui::PostUpdate()
 bool j1Gui::CleanUp()
 {
 	LOG("Freeing GUI");
-
+	for (int i = 0; i < UI_Elements.count(); i++)
+		delete UI_Elements[i];
 	return true;
 }
 
+UI_Image * j1Gui::CreateUI_Image( SDL_Texture * texture, SDL_Rect rect, SDL_Rect position, SDL_Rect collider)
+{
+	UI_Image* image = new UI_Image( texture, rect, position, collider);
+	UI_Elements.add(image);
+	return image;
+}
+
 // const getter for atlas
-const SDL_Texture* j1Gui::GetAtlas() const
+SDL_Texture* j1Gui::GetAtlas() const
 {
 	return atlas;
 }
 
 // class Gui ---------------------------------------------------
 
+void UI_Image::Draw()
+{
+	App->render->Blit(texture,position.x, position.y, )
+}

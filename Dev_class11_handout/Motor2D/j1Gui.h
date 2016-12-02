@@ -9,12 +9,13 @@
 class UI_Element
 {
 public:
+	UI_Element(SDL_Rect position, SDL_Rect collider) : position(position), collider(collider), parent(NULL){}
 	bool Update(float dt);
-	virtual bool personalUpdate(float dt);
-	
-
+	virtual bool PersonalUpdate(float dt);
+	virtual void Draw() {}
+	SDL_Rect position;
 private:
-	SDL_Rect position, collider;
+	SDL_Rect collider;
 	UI_Element* parent;
 	p2DynArray<UI_Element*> childs;
 	p2List<j1Module*> listeners;
@@ -47,7 +48,8 @@ private:
 class UI_Image : public UI_Element
 {
 public:
-
+	UI_Image(SDL_Texture* texture, SDL_Rect rect, SDL_Rect position, SDL_Rect collider) : UI_Element(position, collider), texture(texture), rect(rect){}
+	void Draw();
 private:
 	SDL_Texture* texture;
 	SDL_Rect rect;
@@ -125,7 +127,9 @@ public:
 
 	// TODO 2: Create the factory methods
 	// Gui creation functions
-	UI_Image* CreateUI_Image(SDL_Rect position, SDL_Texture* texture, SDL_Rect rect, SDL_Rect collider = { 0, 0, 0, 0 });
+	UI_Image* CreateUI_Image(SDL_Texture* texture, SDL_Rect rect, SDL_Rect position, SDL_Rect collider = { 0, 0, 0, 0 });
+
+	UI_Label* CreateUI_Label(SDL_Rect position, SDL_Texture* texture, char* text, int r, int g, int b, SDL_Rect collider = { 0,0,0,0 });
 
 	UI_Rect* CreateUI_Rect(SDL_Rect position, int r, int g, int b, SDL_Rect collider);
 
